@@ -1,20 +1,14 @@
-function isAlienSorted(words, order) {
-  const dict = new Map();
-  for (let i = 0; i < order.length; i++) {
-    dict.set(order[i], i);
-  }
-  for (let i = 0; i < words.length - 1; i++) {
-    const word1 = words[i];
-    const word2 = words[i + 1];
-    let found = false;
-    for (let j = 0; j < Math.min(word1.length, word2.length); j++) {
-      if (word1[j] !== word2[j]) {
-        if (dict.get(word1[j]) > dict.get(word2[j])) return false;
-        found = true;
+function wordBreak(s, wordDict) {
+  const set = new Set(wordDict);
+  const dp = new Array(s.length + 1).fill(false);
+  dp[0] = true;
+  for (let end = 1; end <= s.length; end++) {
+    for (let start = 0; start < end; start++) {
+      if (dp[start] && set.has(s.substring(start, end))) {
+        dp[end] = true;
         break;
       }
     }
-    if (!found && word1.length > word2.length) return false;
   }
-  return true;
+  return dp[s.length];
 }
